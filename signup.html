@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — NovaCart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <a href="index.html" class="brand">NovaCart</a>
+      <h2>Create account</h2>
+      <p>Join thousands of happy shoppers</p>
+
+      <div id="authError" style="display:none;background:#fee2e2;color:#ef4444;padding:10px 14px;border-radius:10px;font-size:0.9rem;margin-bottom:1rem;border:1px solid #fca5a5"></div>
+
+      <form onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="name" placeholder="John Doe" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div style="position:relative">
+            <input type="password" id="password" placeholder="Min 6 characters" required style="padding-right:44px" oninput="checkStrength(this.value)">
+            <button type="button" onclick="togglePwd()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:1rem">
+              <i class="fa-regular fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <div style="margin-top:6px;height:4px;border-radius:4px;background:var(--border);overflow:hidden">
+            <div id="strengthBar" style="height:100%;width:0;transition:all 0.3s;border-radius:4px"></div>
+          </div>
+          <div id="strengthLabel" style="font-size:0.75rem;color:var(--muted);margin-top:3px"></div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirm" placeholder="Repeat password" required>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:1rem">
+          <input type="checkbox" id="terms" style="margin-top:3px;accent-color:var(--accent);width:16px;height:16px" required>
+          <label for="terms" style="font-size:0.85rem;color:var(--muted);cursor:pointer">
+            I agree to the <a href="#" style="color:var(--accent)">Terms of Service</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a>
+          </label>
+        </div>
+        <button type="submit" class="auth-submit" id="signupBtn">
+          <span id="signupBtnText">Create Account</span>
+        </button>
+      </form>
+
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.9rem;color:var(--muted)">
+        Already have an account? <a href="login.html" class="auth-link">Sign in</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    function togglePwd() {
+      const inp = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      icon.className = inp.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    }
+
+    function checkStrength(val) {
+      const bar = document.getElementById('strengthBar');
+      const label = document.getElementById('strengthLabel');
+      let strength = 0;
+      if (val.length >= 6) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^a-zA-Z0-9]/.test(val)) strength++;
+      const levels = [
+        { pct:'0%', color:'', text:'' },
+        { pct:'25%', color:'#ef4444', text:'Weak' },
+        { pct:'50%', color:'#f59e0b', text:'Fair' },
+        { pct:'75%', color:'#3b82f6', text:'Good' },
+        { pct:'100%', color:'#22c55e', text:'Strong 💪' },
+      ];
+      const l = levels[strength];
+      bar.style.width = l.pct;
+      bar.style.background = l.color;
+      label.textContent = l.text;
+      label.style.color = l.color;
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      const err = document.getElementById('authError');
+      const btn = document.getElementById('signupBtn');
+      const txt = document.getElementById('signupBtnText');
+      err.style.display = 'none';
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+
+      if (pass.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.style.display='block'; return; }
+      if (pass !== confirm) { err.textContent = 'Passwords do not match.'; err.style.display='block'; return; }
+
+      btn.disabled = true;
+      txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating account…';
+
+      setTimeout(() => {
+        localStorage.setItem('novaUser', JSON.stringify({ name, email }));
+        showToast('Account created! Welcome 🎉');
+        setTimeout(() => window.location = 'index.html', 1000);
+      }, 1400);
+    }
+  </script>
+</body>
+</html>

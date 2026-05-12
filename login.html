@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — NovaCart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <a href="index.html" class="brand">NovaCart</a>
+      <h2>Welcome back</h2>
+      <p>Sign in to your account</p>
+
+      <div id="authError" style="display:none;background:#fee2e2;color:#ef4444;padding:10px 14px;border-radius:10px;font-size:0.9rem;margin-bottom:1rem;border:1px solid #fca5a5"></div>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div style="position:relative">
+            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" style="padding-right:44px">
+            <button type="button" onclick="togglePwd('password')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);font-size:1rem">
+              <i class="fa-regular fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+        <div style="text-align:right;margin-bottom:1rem">
+          <a href="#" style="font-size:0.85rem;color:var(--accent)">Forgot password?</a>
+        </div>
+        <button type="submit" class="auth-submit" id="loginBtn">
+          <span id="loginBtnText">Sign In</span>
+        </button>
+      </form>
+
+      <div class="auth-divider">— or sign in with —</div>
+      <div style="display:flex;gap:10px">
+        <button onclick="showToast('Google login coming soon!')" style="flex:1;padding:12px;border:2px solid var(--border);border-radius:10px;background:white;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;color:var(--dark);transition:all 0.3s;cursor:pointer">
+          <i class="fa-brands fa-google" style="color:#ea4335"></i> Google
+        </button>
+        <button onclick="showToast('Facebook login coming soon!')" style="flex:1;padding:12px;border:2px solid var(--border);border-radius:10px;background:white;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;color:var(--dark);transition:all 0.3s;cursor:pointer">
+          <i class="fa-brands fa-facebook" style="color:#1877f2"></i> Facebook
+        </button>
+      </div>
+
+      <p style="text-align:center;margin-top:1.5rem;font-size:0.9rem;color:var(--muted)">
+        Don't have an account? <a href="signup.html" class="auth-link">Sign up free</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    function togglePwd(id) {
+      const inp = document.getElementById(id);
+      const icon = document.getElementById('eyeIcon');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        inp.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const txt = document.getElementById('loginBtnText');
+      const err = document.getElementById('authError');
+      btn.disabled = true;
+      txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Signing in…';
+      err.style.display = 'none';
+
+      setTimeout(() => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        // Demo: any filled form passes
+        if (email && pass.length >= 6) {
+          localStorage.setItem('novaUser', JSON.stringify({ email }));
+          showToast('Welcome back! 🎉');
+          setTimeout(() => window.location = 'index.html', 1000);
+        } else {
+          err.textContent = 'Password must be at least 6 characters.';
+          err.style.display = 'block';
+          btn.disabled = false;
+          txt.textContent = 'Sign In';
+        }
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

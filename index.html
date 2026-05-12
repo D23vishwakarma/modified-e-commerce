@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaCart — Premium Shopping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sidebar Overlay -->
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">NovaCart</div>
+    <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+      <a href="#"><i class="fa-solid fa-box"></i> Orders</a>
+      <a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a>
+      <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="#"><i class="fa-solid fa-bell"></i> Notifications</a>
+      <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <button class="menu-btn" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <a href="index.html" class="brand">NovaCart</a>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="login.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="cart.html" class="cart-link">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </nav>
+      <button class="mobile-cart-btn" onclick="window.location='cart.html'">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count" id="cartCountMobile">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Slider -->
+  <section class="hero" id="hero">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide active" style="background: linear-gradient(135deg, #0e2030 0%, #1a3a5c 50%, #0e2030 100%);">
+        <div class="hero-content">
+          <span class="hero-tag">New Collection 2025</span>
+          <h1>Style That <em>Speaks</em></h1>
+          <p>Discover curated fashion, tech & lifestyle products delivered to your door.</p>
+          <a href="products.html" class="hero-btn">Shop Now <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="hero-visual">
+          <img src="https://m.media-amazon.com/images/I/71xHyqBwdcL._SX3000_.jpg" alt="Hero 1" onerror="this.style.display='none'">
+        </div>
+      </div>
+      <div class="hero-slide" style="background: linear-gradient(135deg, #1a0a2e 0%, #3a1a5c 50%, #1a0a2e 100%);">
+        <div class="hero-content">
+          <span class="hero-tag">Tech Deals</span>
+          <h1>Smart Gear, <em>Smarter</em> Prices</h1>
+          <p>Top electronics and gadgets at unbeatable prices, every day.</p>
+          <a href="products.html" class="hero-btn">Explore Tech <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="hero-slide" style="background: linear-gradient(135deg, #0a2010 0%, #1a4a2a 50%, #0a2010 100%);">
+        <div class="hero-content">
+          <span class="hero-tag">Weekend Sale</span>
+          <h1>Up to <em>60% Off</em> This Weekend</h1>
+          <p>Limited-time deals on hundreds of top products. Don't miss out.</p>
+          <a href="products.html" class="hero-btn">See Deals <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <button class="hero-arrow left" onclick="slideHero(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="hero-arrow right" onclick="slideHero(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="hero-dots" id="heroDots">
+      <span class="dot active" onclick="goToSlide(0)"></span>
+      <span class="dot" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+    </div>
+  </section>
+
+  <!-- Category Pills -->
+  <section class="categories">
+    <div class="category-pill active" onclick="filterProducts('all')">All</div>
+    <div class="category-pill" onclick="filterProducts('fashion')">👕 Fashion</div>
+    <div class="category-pill" onclick="filterProducts('electronics')">💻 Electronics</div>
+    <div class="category-pill" onclick="filterProducts('sports')">⚽ Sports</div>
+    <div class="category-pill" onclick="filterProducts('home')">🏠 Home</div>
+    <div class="category-pill" onclick="filterProducts('music')">🎸 Music</div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="products-section">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <a href="products.html" class="see-all">See All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="product-grid" id="productGrid">
+
+      <div class="product-card" data-category="fashion">
+        <div class="product-img-wrap">
+          <img src="https://m.media-amazon.com/images/I/91lDZrrLkCL._UY1100_.jpg" alt="Stylish Shirt" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+          <div class="product-badge">New</div>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Fashion</span>
+          <h3>Stylish Shirt</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+            <span>(128)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$29.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Stylish Shirt', 29.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="electronics">
+        <div class="product-img-wrap">
+          <img src="https://images-cdn.ubuy.co.in/66023f3cc4fde233421eb9bc-new-smart-watch-call-receive-dial-hd.jpg" alt="Smart Watch" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+          <div class="product-badge sale">Sale</div>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Electronics</span>
+          <h3>Smart Watch</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span>(342)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$99.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Smart Watch', 99.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="fashion">
+        <div class="product-img-wrap">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWOM56Bvvljqft99DkZQHxdWbqe7kRXOy9yQ&s" alt="Sneakers" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Fashion</span>
+          <h3>Sneakers Pro</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+            <span>(89)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$59.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Sneakers Pro', 59.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="music">
+        <div class="product-img-wrap">
+          <img src="https://vibemusic.in/wp-content/uploads/2024/07/Hertz-LP-Custom-Electric-Guitar-FM.jpeg" alt="Guitar" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+          <div class="product-badge">Hot</div>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Music</span>
+          <h3>Electric Guitar</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+            <span>(54)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$299.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Electric Guitar', 299.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="electronics">
+        <div class="product-img-wrap">
+          <img src="https://ik.imagekit.io/budli/images/full/0e36625afe341ce739026302ce446a3f.png?tr=h-250%2Cw-250%2Ccm-pad_resize" alt="Laptop" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+          <div class="product-badge sale">-20%</div>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Electronics</span>
+          <h3>Pro Laptop</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span>(201)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$799.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Pro Laptop', 799.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="sports">
+        <div class="product-img-wrap">
+          <img src="https://rukminim2.flixcart.com/image/240/240/xif0q/outdoor-toy/w/d/w/-original-imah44c7dzgzndhu.jpeg?q=60" alt="Sports" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Sports</span>
+          <h3>Sports Ball Set</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+            <span>(33)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$24.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Sports Ball Set', 24.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="sports">
+        <div class="product-img-wrap">
+          <img src="https://rukminim2.flixcart.com/image/612/612/xif0q/treadmill/3/a/h/rpm800-4-in-1-multifunction-for-men-women-homegym-workout-non-original-imahd8ch9jjfe8hh.jpeg?q=70" alt="Treadmill" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Sports</span>
+          <h3>Home Treadmill</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
+            <span>(76)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$249.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Home Treadmill', 249.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="home">
+        <div class="product-img-wrap">
+          <img src="https://rukminim1.flixcart.com/image/240/240/xif0q/lunch-box/c/t/9/1900-pro-lunch-box-3-containers-1-chutney-dabba-1-bottle-spoon-original-imagkf9vy7c3nhyy.jpeg?q=60" alt="Lunch Box" loading="lazy">
+          <button class="wishlist-btn"><i class="fa-regular fa-heart"></i></button>
+        </div>
+        <div class="product-info">
+          <span class="product-cat">Home</span>
+          <h3>Pro Lunch Box</h3>
+          <div class="product-rating">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <span>(412)</span>
+          </div>
+          <div class="product-footer">
+            <span class="price">$14.99</span>
+            <button class="add-btn" onclick="addToCart(this, 'Pro Lunch Box', 14.99)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Books Slider -->
+  <section class="shelf-section">
+    <div class="section-header">
+      <h2>📚 Best Sellers in Books</h2>
+      <div class="slider-arrows">
+        <button onclick="scrollShelf('books', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button onclick="scrollShelf('books', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="shelf-track" id="books">
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/91ZVf3kNrcL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/61urHRFZpYL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81+efMYN9wL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81ANaVZk5LL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81dGKZOtqIL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81zaplRGWBL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/8151hnV9SrL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/61STKZcryUL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/71S3Z-h0LHL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81qsstEtrgL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/71c+ReofeoL._AC_SY200_.jpg" alt="Book"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/812W6UKfgVL._AC_SY200_.jpg" alt="Book"></div>
+    </div>
+  </section>
+
+  <!-- Home Goods Slider -->
+  <section class="shelf-section">
+    <div class="section-header">
+      <h2>🏠 Best Sellers in Home</h2>
+      <div class="slider-arrows">
+        <button onclick="scrollShelf('home-shelf', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+        <button onclick="scrollShelf('home-shelf', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+    <div class="shelf-track" id="home-shelf">
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/71b8fh-dQ4L._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/811XxyvomTL._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/81-X1rSie5L._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/71Si2QlAb3L._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/91MTW21x7pL._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/71A5SvOD8lL._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/813SLfB2VML._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/617z6N3l59L._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/91GwkTk87gL._AC_SY200_.jpg" alt="Home"></div>
+      <div class="shelf-item"><img src="https://m.media-amazon.com/images/I/714tUfj1g-L._AC_SY200_.jpg" alt="Home"></div>
+    </div>
+  </section>
+
+  <!-- Sign In Banner -->
+  <section class="signin-banner">
+    <div class="signin-inner">
+      <div>
+        <h3>Get Personalised Recommendations</h3>
+        <p>Sign in to see products tailored just for you.</p>
+      </div>
+      <div class="signin-actions">
+        <a href="signup.html" class="btn-primary">Sign Up Free</a>
+        <a href="login.html" class="btn-ghost">Login</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="brand">NovaCart</span>
+        <p>Your premium destination for fashion, tech & lifestyle.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Shop</h4>
+        <a href="products.html">All Products</a>
+        <a href="#">New Arrivals</a>
+        <a href="#">Best Sellers</a>
+        <a href="#">Deals</a>
+      </div>
+      <div class="footer-links">
+        <h4>Account</h4>
+        <a href="login.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="cart.html">Cart</a>
+        <a href="settings.html">Settings</a>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 NovaCart. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

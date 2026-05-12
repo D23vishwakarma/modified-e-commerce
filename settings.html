@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — NovaCart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">NovaCart</div>
+    <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="sidebar-nav">
+      <a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+      <a href="#"><i class="fa-solid fa-box"></i> Orders</a>
+      <a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a>
+      <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+      <a href="settings.html" class="active"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="#"><i class="fa-solid fa-bell"></i> Notifications</a>
+      <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <button class="menu-btn" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <a href="index.html" class="brand">NovaCart</a>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="login.html">Login</a>
+        <a href="cart.html" class="cart-link">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </nav>
+      <button class="mobile-cart-btn" onclick="window.location='cart.html'">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count" id="cartCountMobile">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="settings-layout">
+
+    <!-- Settings Sidebar -->
+    <aside class="settings-sidebar">
+      <h2>Settings</h2>
+      <a href="#account" class="active" onclick="showTab('account',this)"><i class="fa-solid fa-user"></i> Account Info</a>
+      <a href="#address" onclick="showTab('address',this)"><i class="fa-solid fa-location-dot"></i> Address</a>
+      <a href="#payment" onclick="showTab('payment',this)"><i class="fa-solid fa-credit-card"></i> Payment</a>
+      <a href="#security" onclick="showTab('security',this)"><i class="fa-solid fa-lock"></i> Security</a>
+      <a href="#notifications" onclick="showTab('notifications',this)"><i class="fa-solid fa-bell"></i> Notifications</a>
+      <a href="#preferences" onclick="showTab('preferences',this)"><i class="fa-solid fa-sliders"></i> Preferences</a>
+      <a href="#danger" onclick="showTab('danger',this)" style="color:#ef4444"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</a>
+    </aside>
+
+    <!-- Settings Main -->
+    <main class="settings-main">
+      <h1 class="page-title" style="margin-bottom:1.5rem">Account Settings</h1>
+
+      <!-- Account Info -->
+      <div class="settings-section" id="tab-account">
+        <h3><i class="fa-solid fa-user" style="color:var(--accent);margin-right:8px"></i>Account Information</h3>
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem">
+          <div id="avatarCircle" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#e84393,#ff6b35);display:flex;align-items:center;justify-content:center;font-size:2rem;color:white;font-weight:700;flex-shrink:0">J</div>
+          <div>
+            <div style="font-weight:600;font-size:1rem" id="avatarName">John Doe</div>
+            <div style="color:var(--muted);font-size:0.85rem">Member since 2025</div>
+            <button onclick="showToast('Photo upload coming soon!')" style="margin-top:6px;background:none;border:1px solid var(--border);padding:5px 12px;border-radius:100px;font-size:0.8rem;color:var(--navy);cursor:pointer">Change photo</button>
+          </div>
+        </div>
+        <label>Full Name</label>
+        <input type="text" id="settingName" placeholder="John Doe">
+        <label>Email Address</label>
+        <input type="email" id="settingEmail" placeholder="johndoe@example.com">
+        <label>Phone Number</label>
+        <input type="tel" id="settingPhone" placeholder="+91 98765 43210">
+        <button class="save-btn" onclick="saveSection('account')">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+      </div>
+
+      <!-- Address -->
+      <div class="settings-section" id="tab-address" style="display:none">
+        <h3><i class="fa-solid fa-location-dot" style="color:var(--accent);margin-right:8px"></i>Address Management</h3>
+        <label>Street Address</label>
+        <input type="text" id="settingStreet" placeholder="123 Main Street">
+        <label>City</label>
+        <input type="text" id="settingCity" placeholder="Mumbai">
+        <label>State / Province</label>
+        <input type="text" id="settingState" placeholder="Maharashtra">
+        <label>ZIP / PIN Code</label>
+        <input type="text" id="settingZip" placeholder="400001">
+        <label>Country</label>
+        <select id="settingCountry">
+          <option>India</option>
+          <option>United States</option>
+          <option>United Kingdom</option>
+          <option>Canada</option>
+          <option>Australia</option>
+          <option>Germany</option>
+          <option>France</option>
+          <option>Japan</option>
+        </select>
+        <button class="save-btn" onclick="saveSection('address')">
+          <i class="fa-solid fa-floppy-disk"></i> Update Address
+        </button>
+      </div>
+
+      <!-- Payment -->
+      <div class="settings-section" id="tab-payment" style="display:none">
+        <h3><i class="fa-solid fa-credit-card" style="color:var(--accent);margin-right:8px"></i>Payment Methods</h3>
+        <div style="background:linear-gradient(135deg,#0d1b2a,#1a2e4a);border-radius:14px;padding:1.5rem;color:white;margin-bottom:1.5rem;position:relative;overflow:hidden">
+          <div style="font-size:0.75rem;opacity:0.6;letter-spacing:2px;text-transform:uppercase">Credit Card</div>
+          <div style="font-size:1.4rem;letter-spacing:4px;margin:0.8rem 0">•••• •••• •••• 1234</div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div><div style="font-size:0.7rem;opacity:0.6">Cardholder</div><div style="font-weight:600">John Doe</div></div>
+            <div><div style="font-size:0.7rem;opacity:0.6">Expires</div><div style="font-weight:600">12/27</div></div>
+            <i class="fa-brands fa-cc-visa" style="font-size:2rem;opacity:0.8"></i>
+          </div>
+          <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.05)"></div>
+        </div>
+        <label>Cardholder Name</label>
+        <input type="text" id="cardName" placeholder="John Doe">
+        <label>Card Number</label>
+        <input type="text" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" oninput="formatCard(this)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div>
+            <label>Expiry Date</label>
+            <input type="text" placeholder="MM/YY" maxlength="5">
+          </div>
+          <div>
+            <label>CVV</label>
+            <input type="password" placeholder="•••" maxlength="4">
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveSection('payment')">
+          <i class="fa-solid fa-plus"></i> Add Payment Method
+        </button>
+      </div>
+
+      <!-- Security -->
+      <div class="settings-section" id="tab-security" style="display:none">
+        <h3><i class="fa-solid fa-lock" style="color:var(--accent);margin-right:8px"></i>Privacy & Security</h3>
+        <label>Current Password</label>
+        <input type="password" id="currentPwd" placeholder="••••••••">
+        <label>New Password</label>
+        <input type="password" id="newPwd" placeholder="Min 6 characters" oninput="checkStrength(this.value)">
+        <div style="margin-top:6px;height:4px;border-radius:4px;background:var(--border);overflow:hidden">
+          <div id="strengthBar" style="height:100%;width:0;transition:all 0.3s;border-radius:4px"></div>
+        </div>
+        <label>Confirm New Password</label>
+        <input type="password" id="confirmPwd" placeholder="Repeat new password">
+        <div style="margin-top:1.25rem;padding:1rem;background:var(--bg);border-radius:10px">
+          <div style="font-weight:600;margin-bottom:8px">Two-Factor Authentication</div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:0.9rem;color:var(--muted)">Add an extra layer of security</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="twoFactor">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveSection('security')">
+          <i class="fa-solid fa-shield"></i> Update Password
+        </button>
+      </div>
+
+      <!-- Notifications -->
+      <div class="settings-section" id="tab-notifications" style="display:none">
+        <h3><i class="fa-solid fa-bell" style="color:var(--accent);margin-right:8px"></i>Notification Preferences</h3>
+        <div class="notif-row">
+          <div>
+            <div style="font-weight:600">Email Notifications</div>
+            <div style="font-size:0.85rem;color:var(--muted)">Order updates, receipts, and account alerts</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-row">
+          <div>
+            <div style="font-weight:600">SMS Notifications</div>
+            <div style="font-size:0.85rem;color:var(--muted)">Text alerts for deliveries and OTPs</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-row">
+          <div>
+            <div style="font-weight:600">Promotional Offers</div>
+            <div style="font-size:0.85rem;color:var(--muted)">Deals, discounts, and new arrivals</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-row">
+          <div>
+            <div style="font-weight:600">Order Status Updates</div>
+            <div style="font-size:0.85rem;color:var(--muted)">Shipped, out for delivery, delivered</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="notif-row">
+          <div>
+            <div style="font-weight:600">Wishlist Alerts</div>
+            <div style="font-size:0.85rem;color:var(--muted)">Price drops on your wishlist items</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label>
+        </div>
+        <button class="save-btn" onclick="saveSection('notifications')">
+          <i class="fa-solid fa-floppy-disk"></i> Save Preferences
+        </button>
+      </div>
+
+      <!-- Preferences -->
+      <div class="settings-section" id="tab-preferences" style="display:none">
+        <h3><i class="fa-solid fa-sliders" style="color:var(--accent);margin-right:8px"></i>Language & Preferences</h3>
+        <label>Language</label>
+        <select>
+          <option>English</option>
+          <option>Hindi (हिन्दी)</option>
+          <option>Spanish (Español)</option>
+          <option>French (Français)</option>
+          <option>German (Deutsch)</option>
+          <option>Japanese (日本語)</option>
+        </select>
+        <label>Currency</label>
+        <select>
+          <option>INR — Indian Rupee ₹</option>
+          <option>USD — US Dollar $</option>
+          <option>EUR — Euro €</option>
+          <option>GBP — British Pound £</option>
+          <option>JPY — Japanese Yen ¥</option>
+        </select>
+        <label>Theme</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+          <div class="theme-opt active" onclick="selectTheme(this,'light')">
+            <i class="fa-solid fa-sun"></i> Light
+          </div>
+          <div class="theme-opt" onclick="selectTheme(this,'dark')">
+            <i class="fa-solid fa-moon"></i> Dark
+          </div>
+        </div>
+        <button class="save-btn" style="margin-top:1.25rem" onclick="saveSection('preferences')">
+          <i class="fa-solid fa-floppy-disk"></i> Save Settings
+        </button>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-section danger-zone" id="tab-danger" style="display:none">
+        <h3>⚠️ Danger Zone</h3>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem">
+          These actions are permanent and cannot be undone. Please proceed with caution.
+        </p>
+        <div style="background:#fff5f5;border:1px solid #fca5a5;border-radius:10px;padding:1rem;margin-bottom:1rem">
+          <div style="font-weight:600;color:#dc2626">Clear Cart & Wishlist</div>
+          <div style="font-size:0.85rem;color:var(--muted);margin:4px 0 10px">Remove all items from your cart and wishlist.</div>
+          <button onclick="clearData()" style="background:#dc2626;color:white;border:none;padding:8px 18px;border-radius:100px;font-weight:600;cursor:pointer;font-size:0.85rem">Clear Data</button>
+        </div>
+        <div style="background:#fff5f5;border:1px solid #fca5a5;border-radius:10px;padding:1rem">
+          <div style="font-weight:600;color:#dc2626">Delete My Account</div>
+          <div style="font-size:0.85rem;color:var(--muted);margin:4px 0 10px">Once you delete your account, all data is permanently removed.</div>
+          <button class="delete-btn" onclick="confirmDelete()">Delete My Account</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="border-top:none">
+      <p>&copy; 2025 NovaCart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- Extra styles for settings page -->
+  <style>
+    .notif-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid var(--border); gap: 1rem;
+    }
+    .notif-row:last-of-type { border-bottom: none; }
+
+    /* Toggle switch */
+    .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; background: #cbd5e1; border-radius: 100px;
+      cursor: pointer; transition: 0.3s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; left: 3px; top: 3px;
+      background: white; border-radius: 50%; transition: 0.3s;
+    }
+    input:checked + .toggle-slider { background: var(--accent); }
+    input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* Theme option */
+    .theme-opt {
+      border: 2px solid var(--border); border-radius: 10px;
+      padding: 12px; text-align: center; cursor: pointer;
+      font-weight: 600; transition: all 0.3s; color: var(--muted);
+    }
+    .theme-opt.active { border-color: var(--accent); color: var(--accent); background: #fff0f7; }
+    .theme-opt:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .settings-sidebar { flex-direction: row; overflow-x: auto; }
+      .settings-sidebar a { white-space: nowrap; font-size: 0.85rem; padding: 8px 12px; }
+      .settings-main { padding: 1rem; }
+    }
+  </style>
+
+  <script src="app.js"></script>
+  <script>
+    /* ── Tab switching ── */
+    function showTab(id, el) {
+      document.querySelectorAll('.settings-section').forEach(s => s.style.display = 'none');
+      document.getElementById('tab-' + id).style.display = 'block';
+      document.querySelectorAll('.settings-sidebar a').forEach(a => a.classList.remove('active'));
+      if (el) el.classList.add('active');
+    }
+
+    /* ── Prefill from localStorage ── */
+    const user = JSON.parse(localStorage.getItem('novaUser') || '{}');
+    if (user.name) {
+      document.getElementById('settingName').value = user.name;
+      document.getElementById('avatarName').textContent = user.name;
+      document.getElementById('avatarCircle').textContent = user.name[0].toUpperCase();
+    }
+    if (user.email) document.getElementById('settingEmail').value = user.email;
+
+    /* ── Save section ── */
+    function saveSection(section) {
+      if (section === 'account') {
+        const name = document.getElementById('settingName').value;
+        const email = document.getElementById('settingEmail').value;
+        localStorage.setItem('novaUser', JSON.stringify({ ...user, name, email }));
+        if (name) {
+          document.getElementById('avatarName').textContent = name;
+          document.getElementById('avatarCircle').textContent = name[0].toUpperCase();
+        }
+      }
+      showToast('✅ Changes saved successfully!');
+    }
+
+    /* ── Password strength ── */
+    function checkStrength(val) {
+      const bar = document.getElementById('strengthBar');
+      let s = 0;
+      if (val.length >= 6) s++;
+      if (/[A-Z]/.test(val)) s++;
+      if (/[0-9]/.test(val)) s++;
+      if (/[^a-zA-Z0-9]/.test(val)) s++;
+      const lvl = [
+        { w:'0%', c:'' },
+        { w:'25%', c:'#ef4444' },
+        { w:'50%', c:'#f59e0b' },
+        { w:'75%', c:'#3b82f6' },
+        { w:'100%', c:'#22c55e' },
+      ][s];
+      bar.style.width = lvl.w;
+      bar.style.background = lvl.c;
+    }
+
+    /* ── Format card number ── */
+    function formatCard(el) {
+      let v = el.value.replace(/\D/g, '').substring(0, 16);
+      el.value = v.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    /* ── Theme select ── */
+    function selectTheme(el, theme) {
+      document.querySelectorAll('.theme-opt').forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
+      showToast(theme === 'dark' ? '🌙 Dark mode coming soon!' : '☀️ Light mode active');
+    }
+
+    /* ── Danger actions ── */
+    function clearData() {
+      if (confirm('Clear your cart and wishlist? This cannot be undone.')) {
+        saveCart([]);
+        updateCartBadge();
+        showToast('Cart & wishlist cleared');
+      }
+    }
+
+    function confirmDelete() {
+      if (confirm('Are you absolutely sure? This will permanently delete your account.')) {
+        localStorage.clear();
+        showToast('Account deleted. Redirecting…');
+        setTimeout(() => window.location = 'signup.html', 1500);
+      }
+    }
+
+    /* ── Init ── */
+    showTab('account', document.querySelector('.settings-sidebar a'));
+  </script>
+</body>
+</html>

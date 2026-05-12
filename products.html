@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — NovaCart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">NovaCart</div>
+    <button class="sidebar-close" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+    <nav class="sidebar-nav">
+      <a href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+      <a href="#"><i class="fa-solid fa-user"></i> Profile</a>
+      <a href="#"><i class="fa-solid fa-box"></i> Orders</a>
+      <a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a>
+      <a href="cart.html"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+      <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </nav>
+  </aside>
+
+  <header class="header" id="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <button class="menu-btn" onclick="openSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <a href="index.html" class="brand">NovaCart</a>
+      </div>
+      <nav class="header-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="login.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="cart.html" class="cart-link">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </nav>
+      <button class="mobile-cart-btn" onclick="window.location='cart.html'">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count" id="cartCountMobile">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="products-page">
+    <div class="products-page-header">
+      <h2 class="page-title" style="margin:0">Browse Products</h2>
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search products…" oninput="searchProducts(this.value)">
+      </div>
+    </div>
+
+    <div class="categories" style="padding:0 0 1.5rem">
+      <div class="category-pill active" onclick="filterCat('all',this)">All</div>
+      <div class="category-pill" onclick="filterCat('fashion',this)">👕 Fashion</div>
+      <div class="category-pill" onclick="filterCat('electronics',this)">💻 Electronics</div>
+      <div class="category-pill" onclick="filterCat('sports',this)">⚽ Sports</div>
+      <div class="category-pill" onclick="filterCat('home',this)">🏠 Home</div>
+      <div class="category-pill" onclick="filterCat('music',this)">🎸 Music</div>
+      <div class="category-pill" onclick="filterCat('books',this)">📚 Books</div>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+    <p id="noResults" style="text-align:center;color:var(--muted);display:none;padding:3rem">No products found.</p>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="border-top:none">
+      <p>&copy; 2025 NovaCart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMsg">Added to cart!</span>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const ALL_PRODUCTS = [
+      { name:'Wireless Headphones', price:89.99, cat:'electronics', badge:'New', img:'https://images.pexels.com/photos/3394659/pexels-photo-3394659.jpeg?auto=compress&cs=tinysrgb&h=300', rating:5, reviews:342 },
+      { name:'Smartwatch Series 5', price:149.99, cat:'electronics', badge:'Sale', img:'https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg?auto=compress&cs=tinysrgb&h=300', rating:4, reviews:201 },
+      { name:'Modern Sneakers', price:69.99, cat:'fashion', badge:'', img:'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&h=300', rating:4, reviews:89 },
+      { name:'Urban Backpack', price:39.99, cat:'fashion', badge:'', img:'https://images.pexels.com/photos/374574/pexels-photo-374574.jpeg?auto=compress&cs=tinysrgb&h=300', rating:4, reviews:155 },
+      { name:'DSLR Camera', price:499.99, cat:'electronics', badge:'Hot', img:'https://images.pexels.com/photos/212372/pexels-photo-212372.jpeg?auto=compress&cs=tinysrgb&h=300', rating:5, reviews:73 },
+      { name:'15" Pro Laptop', price:899.99, cat:'electronics', badge:'-20%', img:'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=300', rating:5, reviews:412 },
+      { name:'Polarized Sunglasses', price:24.99, cat:'fashion', badge:'', img:'https://images.pexels.com/photos/46710/pexels-photo-46710.jpeg?auto=compress&cs=tinysrgb&h=300', rating:3, reviews:66 },
+      { name:'RGB Gaming Mouse', price:34.99, cat:'electronics', badge:'', img:'https://images.pexels.com/photos/4792737/pexels-photo-4792737.jpeg?auto=compress&cs=tinysrgb&h=300', rating:4, reviews:288 },
+      { name:'Stylish Shirt', price:29.99, cat:'fashion', badge:'New', img:'https://m.media-amazon.com/images/I/91lDZrrLkCL._UY1100_.jpg', rating:4, reviews:128 },
+      { name:'Electric Guitar', price:299.99, cat:'music', badge:'Hot', img:'https://vibemusic.in/wp-content/uploads/2024/07/Hertz-LP-Custom-Electric-Guitar-FM.jpeg', rating:5, reviews:54 },
+      { name:'Pro Laptop', price:799.99, cat:'electronics', badge:'-20%', img:'https://ik.imagekit.io/budli/images/full/0e36625afe341ce739026302ce446a3f.png', rating:5, reviews:201 },
+      { name:'Sports Ball Set', price:24.99, cat:'sports', badge:'', img:'https://rukminim2.flixcart.com/image/240/240/xif0q/outdoor-toy/w/d/w/-original-imah44c7dzgzndhu.jpeg?q=60', rating:3, reviews:33 },
+      { name:'Home Treadmill', price:249.99, cat:'sports', badge:'', img:'https://rukminim2.flixcart.com/image/612/612/xif0q/treadmill/3/a/h/rpm800-4-in-1-multifunction-for-men-women-homegym-workout-non-original-imahd8ch9jjfe8hh.jpeg?q=70', rating:4, reviews:76 },
+      { name:'Pro Lunch Box', price:14.99, cat:'home', badge:'', img:'https://rukminim1.flixcart.com/image/240/240/xif0q/lunch-box/c/t/9/1900-pro-lunch-box-3-containers-1-chutney-dabba-1-bottle-spoon-original-imagkf9vy7c3nhyy.jpeg?q=60', rating:5, reviews:412 },
+      { name:'Atomic Habits', price:18.99, cat:'books', badge:'Bestseller', img:'https://m.media-amazon.com/images/I/91ZVf3kNrcL._AC_SY200_.jpg', rating:5, reviews:8904 },
+      { name:'The Psychology of Money', price:16.99, cat:'books', badge:'', img:'https://m.media-amazon.com/images/I/81+efMYN9wL._AC_SY200_.jpg', rating:5, reviews:5201 },
+    ];
+
+    let currentCat = 'all';
+    let currentSearch = '';
+
+    function stars(n) {
+      return Array.from({length:5}, (_,i) =>
+        `<i class="fa-${i < n ? 'solid' : 'regular'} fa-star"></i>`
+      ).join('');
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      const noRes = document.getElementById('noResults');
+      const filtered = ALL_PRODUCTS.filter(p => {
+        const catMatch = currentCat === 'all' || p.cat === currentCat;
+        const searchMatch = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+        return catMatch && searchMatch;
+      });
+      if (!filtered.length) {
+        grid.innerHTML = '';
+        noRes.style.display = 'block';
+        return;
+      }
+      noRes.style.display = 'none';
+      grid.innerHTML = filtered.map((p, i) => `
+        <div class="product-card" data-category="${p.cat}" style="animation-delay:${i*0.05}s">
+          <div class="product-img-wrap">
+            <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/240x240?text=Image'">
+            <button class="wishlist-btn" onclick="event.stopPropagation()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+            ${p.badge ? `<div class="product-badge${p.badge==='Sale'||p.badge.startsWith('-')?' sale':''}">${p.badge}</div>` : ''}
+          </div>
+          <div class="product-info">
+            <span class="product-cat">${p.cat}</span>
+            <h3>${p.name}</h3>
+            <div class="product-rating">${stars(p.rating)}<span>(${p.reviews.toLocaleString()})</span></div>
+            <div class="product-footer">
+              <span class="price">$${p.price.toFixed(2)}</span>
+              <button class="add-btn" onclick="addToCart(this,'${p.name}',${p.price})">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function filterCat(cat, el) {
+      currentCat = cat;
+      document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      renderProducts();
+    }
+
+    function searchProducts(val) {
+      currentSearch = val;
+      renderProducts();
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
